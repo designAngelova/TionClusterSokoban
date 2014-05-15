@@ -11,6 +11,7 @@ public class SokobanGame {
 		 System.out.println(" | 1  2  3  4  5  6  7  8  9");
 		 System.out.println(" | 1  2  3  4  5  6  7  8  9");
 		 System.out.println(" | 1  2  3  4  5  6  7  8  9");
+		 System.out.println(" Test Comit");
 		 Terminal terminal = TerminalFacade.createTerminal(System.in, System.out, Charset.forName("UTF8"));
 		 terminal.enterPrivateMode();
 		 terminal.moveCursor(10, 5);
@@ -38,7 +39,7 @@ public class SokobanGame {
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
-		 System.out.println(" Test Comit");
+		 
 	}
 
 }
