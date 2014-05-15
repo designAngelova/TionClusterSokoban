@@ -1,13 +1,14 @@
 package gameMain;
 
+import gameClasses.Controls;
+import gameClasses.GameController;
 import gameClasses.GameField;
+import gameClasses.KeyboardController;
 
 import java.nio.charset.Charset;
 
 import com.googlecode.lanterna.TerminalFacade;
 import com.googlecode.lanterna.terminal.Terminal;
-import com.googlecode.lanterna.terminal.swing.SwingTerminal;
-import com.googlecode.lanterna.terminal.text.CygwinTerminal;
 
 public class SokobanGame {
 
@@ -16,7 +17,30 @@ public class SokobanGame {
 		field.loadLevel(1);
 		 Terminal terminal = TerminalFacade.createTerminal(System.in, System.out, Charset.forName("UTF8"));
 		 terminal.enterPrivateMode();
-		 char[][] matrix = field.getFieldMatrix();
+		 terminal.setCursorVisible(false);
+		 GameController gameController = new KeyboardController(terminal);
+		 Controls key = gameController.getAction();
+		 while (key != Controls.EXIT) {
+			 key = gameController.getAction();
+			 field.move(key); 
+			 drawGameField(field, terminal);
+			 
+		}		    
+		 terminal.exitPrivateMode();
+	}
+	
+	public static void sleep(int msec){
+		try {
+			Thread.sleep(msec);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
+		 
+	}
+	
+	public static void drawGameField(GameField field, Terminal terminal){
+		terminal.clearScreen();
+		char[][] matrix = field.getFieldMatrix();
 		 for (int row = 0; row < matrix.length; row++) {
 			 terminal.moveCursor(10, row + 5);
 			for (int col = 0; col < matrix[0].length; col++) {
@@ -39,7 +63,7 @@ public class SokobanGame {
 					break;
 					case 'P': pattern = '\u263a'; 
 					break;
-					case 'D': pattern = ' '; terminal.applyBackgroundColor(Terminal.Color.MAGENTA);
+					case 'D': pattern = '\u263a'; terminal.applyForegroundColor(Terminal.Color.YELLOW);
 					break;
 				default: pattern = ' '; terminal.applyBackgroundColor(Terminal.Color.BLACK);
 					break;
@@ -49,18 +73,5 @@ public class SokobanGame {
 				terminal.applyForegroundColor(Terminal.Color.DEFAULT);
 			}
 		}
-		 sleep(20000);
-		    
-		 terminal.exitPrivateMode();
 	}
-	
-	public static void sleep(int msec){
-		try {
-			Thread.sleep(msec);
-		} catch (InterruptedException e) {
-			Thread.currentThread().interrupt();
-		}
-		 
-	}
-
 }
