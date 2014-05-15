@@ -21,6 +21,19 @@ public class SokobanGame {
 		 GameController gameController = new KeyboardController(terminal);
 		 Controls key = gameController.getAction();
 		 while (key != Controls.EXIT) {
+			 if (field.checkIsSolved()) {
+				 terminal.clearScreen();
+				 terminal.putCharacter('B');
+				 terminal.putCharacter('R');
+				 terminal.putCharacter('A');
+				 terminal.putCharacter('V');
+				 terminal.putCharacter('O');
+				 terminal.putCharacter('!');
+				 terminal.putCharacter('!');
+				 terminal.putCharacter('!');
+				 sleep(50000);
+				 break;
+			}
 			 key = gameController.getAction();
 			 field.move(key); 
 			 drawGameField(field, terminal);
