@@ -15,9 +15,9 @@ public class GameField {
 	}
 
 	public boolean checkIsSolved() {
-		for (int row = 0; row < this.fieldMatrix.length; row++) {
-			for (int col = 0; col < this.fieldMatrix[0].length; col++) {
-				if (this.fieldMatrix[row][col] == 'B') {
+		for (int row = 0; row < this.getFieldMatrix().length; row++) {
+			for (int col = 0; col < this.getFieldMatrix()[0].length; col++) {
+				if (this.getFieldMatrix()[row][col] == 'B') {
 					return false;
 				}
 			}
@@ -27,13 +27,13 @@ public class GameField {
 	}
 
 	public boolean loadLevel(int level) {
-		try (BufferedReader br = new BufferedReader(new FileReader("file.txt"))) {
+		try (BufferedReader br = new BufferedReader(new FileReader("levels"))) {
 			List<String> fileData = new ArrayList<String>();
 			String line = br.readLine();
-			while (line != "lvl" + level) {
+			while (line != null && !line.equals("lvl" + level)) {
 				line = br.readLine();
 			}
-			while (line != null || line != "lvl" + (level + 1)) {
+			while (line != null && !line.equals("lvl" + (level + 1))) {
 				fileData.add(line);
 				line = br.readLine();
 			}
@@ -42,12 +42,12 @@ public class GameField {
 				return false;
 			}
 
-			this.fieldMatrix = new char[fileData.size()][fileData.get(0)
+			this.fieldMatrix = new char[fileData.size()][fileData.get(1)
 					.length()];
 
-			for (int row = 1; row < this.fieldMatrix.length; row++) {
-				for (int col = 0; col < this.fieldMatrix[0].length; col++) {
-					this.fieldMatrix[row - 1][col] = fileData.get(row).charAt(
+			for (int row = 1; row < this.getFieldMatrix().length; row++) {
+				for (int col = 0; col < this.getFieldMatrix()[0].length; col++) {
+					this.getFieldMatrix()[row - 1][col] = fileData.get(row).charAt(
 							col);
 				}
 			}
@@ -60,6 +60,7 @@ public class GameField {
 	}
 
 	public void move(Controls direction) {
+		
 		int playerRow = 0;
 		int playerCol = 0;
 		int rowMod = 0;
@@ -84,12 +85,12 @@ public class GameField {
 
 		try {
 
-			for (int row = 0; row < this.fieldMatrix.length; row++) {
-				for (int col = 0; col < this.fieldMatrix[0].length; col++) {
-					if (this.fieldMatrix[row][col] == 'P') {
+			for (int row = 0; row < this.getFieldMatrix().length; row++) {
+				for (int col = 0; col < this.getFieldMatrix()[0].length; col++) {
+					if (this.getFieldMatrix()[row][col] == 'P') {
 						playerRow = row;
 						playerCol = col;
-					} else if (this.fieldMatrix[row][col] == 'D') {
+					} else if (this.getFieldMatrix()[row][col] == 'D') {
 						playerRow = row;
 						playerCol = col;
 						playerOnGoal = true;
@@ -97,21 +98,21 @@ public class GameField {
 				}
 			}
 
-			if (this.fieldMatrix[playerRow + rowMod][playerCol + colMod] == '0') {
+			if (this.getFieldMatrix()[playerRow + rowMod][playerCol + colMod] == '0') {
 				moveObject(playerRow, playerCol, playerRow + rowMod, playerCol
 						+ colMod, 'P', playerOnGoal);
-			} else if (this.fieldMatrix[playerRow + rowMod][playerCol + colMod] == 'G') {
+			} else if (this.getFieldMatrix()[playerRow + rowMod][playerCol + colMod] == 'G') {
 				moveObject(playerRow, playerCol, playerRow + rowMod, playerCol
 						+ colMod, 'D', playerOnGoal);
-			} else if (this.fieldMatrix[playerRow + rowMod][playerCol + colMod] == 'B') {
-				if (this.fieldMatrix[playerRow + (2 * rowMod)][playerCol
+			} else if (this.getFieldMatrix()[playerRow + rowMod][playerCol + colMod] == 'B') {
+				if (this.getFieldMatrix()[playerRow + (2 * rowMod)][playerCol
 						+ (2 * colMod)] == 'G') {
 					moveObject(playerRow + rowMod, playerCol + colMod,
 							playerRow + 2 * rowMod, playerCol + 2 * colMod,
 							'X', false);
 					moveObject(playerRow, playerCol, playerRow + rowMod,
 							playerCol + colMod, 'P', playerOnGoal);
-				} else if (this.fieldMatrix[playerRow + (2 * rowMod)][playerCol
+				} else if (this.getFieldMatrix()[playerRow + (2 * rowMod)][playerCol
 						+ (2 * colMod)] == '0') {
 					moveObject(playerRow + rowMod, playerCol + colMod,
 							playerRow + 2 * rowMod, playerCol + 2 * colMod,
@@ -119,15 +120,15 @@ public class GameField {
 					moveObject(playerRow, playerCol, playerRow + rowMod,
 							playerCol + colMod, 'P', playerOnGoal);
 				}
-			} else if (this.fieldMatrix[playerRow + rowMod][playerCol + colMod] == 'X') {
-				if (this.fieldMatrix[playerRow + (2 * rowMod)][playerCol
+			} else if (this.getFieldMatrix()[playerRow + rowMod][playerCol + colMod] == 'X') {
+				if (this.getFieldMatrix()[playerRow + (2 * rowMod)][playerCol
 						+ (2 * colMod)] == 'G') {
 					moveObject(playerRow + rowMod, playerCol + colMod,
 							playerRow + 2 * rowMod, playerCol + 2 * colMod,
 							'X', true);
 					moveObject(playerRow, playerCol, playerRow + rowMod,
 							playerCol + colMod, 'D', playerOnGoal);
-				} else if (this.fieldMatrix[playerRow + (2 * rowMod)][playerCol
+				} else if (this.getFieldMatrix()[playerRow + (2 * rowMod)][playerCol
 						+ (2 * colMod)] == '0') {
 					moveObject(playerRow + rowMod, playerCol + colMod,
 							playerRow + 2 * rowMod, playerCol + 2 * colMod,
@@ -144,11 +145,15 @@ public class GameField {
 	private void moveObject(int oldRow, int oldCol, int newRow, int newCol,
 			char newChar, boolean onGoal) {
 		if (onGoal) {
-			this.fieldMatrix[oldRow][oldCol] = 'G';
+			this.getFieldMatrix()[oldRow][oldCol] = 'G';
 		} else {
-			this.fieldMatrix[oldRow][oldCol] = '0';
+			this.getFieldMatrix()[oldRow][oldCol] = '0';
 		}
 
-		this.fieldMatrix[newRow][newCol] = newChar;
+		this.getFieldMatrix()[newRow][newCol] = newChar;
+	}
+
+	public char[][] getFieldMatrix() {
+		return fieldMatrix;
 	}
 }
