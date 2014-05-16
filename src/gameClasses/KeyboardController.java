@@ -15,7 +15,7 @@ public class KeyboardController extends GameController {
 	}
 
 	@Override
-	Controls getAction() {
+	public Controls getAction() {
 
 		Key key = this.terminal.readInput();
 		Controls control = null;
