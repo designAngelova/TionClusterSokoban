@@ -35,8 +35,8 @@ public class Scores {
 			
 			temp.setLevel(level);
 			temp.setPlayerName(parts[0]);
-			temp.setMoves(Integer.parseInt(parts[1]));
-			temp.setTime(Long.parseLong(parts[2]));
+			temp.setMoves(Integer.parseInt(parts[2]));
+			temp.setTime(Long.parseLong(parts[1]));
 			
 			addScore(temp);
 		}
