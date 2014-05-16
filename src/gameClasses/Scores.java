@@ -1,4 +1,4 @@
-package gameClasses;
+package game;
 
 import java.io.*;
 import java.util.*;
@@ -19,14 +19,34 @@ public class Scores {
 
 	public void setList() {
 		scores = new ArrayList<StatusLine>();
-		scores = StatusLine.getSaveObjects();
+		
+	}
+	public List<StatusLine> getList() {
+		return this.scores;
 	}
 
-	public String[] loadScores(String currentPath) throws IOException {
-		FileReader fr = new FileReader(currentPath);
+	public void loadScores(int level) throws IOException {
+		String[] statusLines = new String[10];
+		statusLines = loadStatusLines(level);
+		for(int i = 0; i < statusLines.length; i++) {
+	
+			StatusLine temp = new StatusLine();
+			String[] parts = statusLines[i].split(" ");
+			
+			temp.setLevel(level);
+			temp.setPlayerName(parts[0]);
+			temp.setMoves(Integer.parseInt(parts[1]));
+			temp.setTime(Long.parseLong(parts[2]));
+			
+			addScore(temp);
+		}
+	}
+	
+	public String[] loadStatusLines(int level) throws IOException {
+		FileReader fr = new FileReader("scores"+ level + ".txt");
 		BufferedReader br = new BufferedReader(fr);
 
-		int numberOfLines = countLines(currentPath);
+		int numberOfLines = countLines(level);
 		String[] playerInfoRead = new String[numberOfLines];
 		for (int i = 0; i < numberOfLines; i++) {
 			playerInfoRead[i] = br.readLine();
@@ -35,8 +55,8 @@ public class Scores {
 		return playerInfoRead;
 	}
 
-	public int countLines(String path) throws IOException {
-		FileReader fr = new FileReader(path);
+	public int countLines(int level) throws IOException {
+		FileReader fr = new FileReader("scores"+ level + ".txt");
 		BufferedReader br = new BufferedReader(fr);
 
 		String aLine = br.readLine();
@@ -49,33 +69,36 @@ public class Scores {
 		br.close();
 		return numberOfLines;
 	}
+	
 
 	public void addScore(StatusLine status) {
 
 		scores.add(status);
-
+        StatusLine.sortList(scores);
+        if (scores.size() > 10) {
+        	scores.remove(10);
+        }
 	}
 
 	public void saveScores(int level) {
 
 		try {
-			StatusLine.sortList(scores);
-			BufferedWriter out = new BufferedWriter(new FileWriter("scores"
-					+ level + ".txt"));
-			for (int i = 0, j = 0; i < scores.size(); i++, j++) {
+			
+			BufferedWriter out = new BufferedWriter(new FileWriter("scores"+ level + ".txt"));
+			for (int i = 0; i < scores.size(); i++) {
 				if (scores.get(i).getLevel() == level) {
-					out.write(scores.get(i).toString());
+					out.write(scores.get(i).toScoreString());
 					out.newLine();
 				}
-				if (j == 9) {
-					break;
-				}
+				
 			}
+			
 			out.flush();
 			out.close();
+			loadScores(level);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
 }
