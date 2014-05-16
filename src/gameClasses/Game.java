@@ -20,7 +20,7 @@ public class Game {
 		this.terminal = GameTerminal.getInstance().getTerminal();
 		this.drawer = new LanternaDrawer();
 		this.field = new GameField();
-		this.controller = new KeyboardController(this.terminal);
+		this.controller = new KeyboardController();
 		this.statusLine = StatusLine.getInstance();
 	}
 

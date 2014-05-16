@@ -17,6 +17,8 @@ public class StatusLine implements Comparable<StatusLine> {
 	private static StatusLine instance = null;
 	   
 	protected StatusLine() {
+		setTimeRow(0);
+		setTimeCol(0);
 		setPlayerName("Guest");
 		setLevel(1);
 		setMoves(0);
@@ -31,7 +33,9 @@ public class StatusLine implements Comparable<StatusLine> {
 	      return instance;
 	   }
 	//end Singleton pattern
-	   
+	
+	private int timeRow;
+	private int timeCol;
 	private String playerName;
 	private int level;
 	private int moves;
@@ -120,5 +124,21 @@ public class StatusLine implements Comparable<StatusLine> {
 
 	public static void sortList(List<StatusLine> sl) {
 		Collections.sort(sl);
+	}
+
+	public int getTimeRow() {
+		return timeRow;
+	}
+
+	public void setTimeRow(int timeRow) {
+		this.timeRow = timeRow;
+	}
+
+	public int getTimeCol() {
+		return timeCol;
+	}
+
+	public void setTimeCol(int timeCol) {
+		this.timeCol = timeCol;
 	}
 }

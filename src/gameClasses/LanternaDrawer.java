@@ -1,39 +1,40 @@
 package gameClasses;
 
 import com.googlecode.lanterna.terminal.Terminal;
-import com.googlecode.lanterna.terminal.TerminalSize;
 
 public class LanternaDrawer {
 	private Terminal terminal = GameTerminal.getInstance().getTerminal();
-	TerminalSize screenSize = terminal.getTerminalSize();
+	private int scrColumns = this.terminal.getTerminalSize().getColumns();
+	private int scrRows = this.terminal.getTerminalSize().getRows();
+	private StatusLine statusLine = StatusLine.getInstance();
 
 	public void drawGameField(GameField field) {
-		terminal.clearScreen();
+		this.terminal.clearScreen();
 		char[][] matrix = field.getFieldMatrix();
-		int colFieldPosModifier = (screenSize.getColumns() - matrix[0].length) / 2;
-		int rowFieldPosModifier = (screenSize.getRows() - matrix.length) / 2;
+		int colFieldPosModifier = (this.scrColumns - matrix[0].length) / 2;
+		int rowFieldPosModifier = (this.scrRows - matrix.length) / 2;
 		for (int row = 0; row < matrix.length; row++) {
-			terminal.moveCursor(colFieldPosModifier, row + rowFieldPosModifier);
+			this.terminal.moveCursor(colFieldPosModifier, row + rowFieldPosModifier);
 			for (int col = 0; col < matrix[0].length; col++) {
 				char pattern = '#';
 				switch (field.getFieldMatrix()[row][col]) {
 				case 'W':
 					pattern = ' ';
-					terminal.applyBackgroundColor(Terminal.Color.RED);
+					this.terminal.applyBackgroundColor(Terminal.Color.RED);
 					break;
 				case 'B':
 					pattern = '\u2588';
-					terminal.applyForegroundColor(Terminal.Color.GREEN);
+					this.terminal.applyForegroundColor(Terminal.Color.GREEN);
 					break;
 				case 'G': {
 					pattern = 'X';
-					terminal.applyForegroundColor(Terminal.Color.YELLOW);
+					this.terminal.applyForegroundColor(Terminal.Color.YELLOW);
 				}
 					break;
 				case 'X': {
 					pattern = 'X';
-					terminal.applyBackgroundColor(Terminal.Color.GREEN);
-					terminal.applyForegroundColor(Terminal.Color.RED);
+					this.terminal.applyBackgroundColor(Terminal.Color.GREEN);
+					this.terminal.applyForegroundColor(Terminal.Color.RED);
 				}
 					break;
 				case 'P':
@@ -41,46 +42,48 @@ public class LanternaDrawer {
 					break;
 				case 'D':
 					pattern = '\u263a';
-					terminal.applyForegroundColor(Terminal.Color.YELLOW);
+					this.terminal.applyForegroundColor(Terminal.Color.YELLOW);
 					break;
 				default:
 					pattern = ' ';
-					terminal.applyBackgroundColor(Terminal.Color.BLACK);
+					this.terminal.applyBackgroundColor(Terminal.Color.BLACK);
 					break;
 				}
-				terminal.putCharacter(pattern);
-				terminal.applyBackgroundColor(Terminal.Color.DEFAULT);
-				terminal.applyForegroundColor(Terminal.Color.DEFAULT);
+				this.terminal.putCharacter(pattern);
+				this.terminal.applyBackgroundColor(Terminal.Color.DEFAULT);
+				this.terminal.applyForegroundColor(Terminal.Color.DEFAULT);
 			}
 		}
 
-		int colLinePosModifier = (screenSize.getColumns() - StatusLine
+		int colLinePosModifier = (this.scrColumns - StatusLine
 				.getInstance().toString().length()) / 2;
 
-		terminal.moveCursor(colLinePosModifier, matrix.length
+		this.terminal.moveCursor(colLinePosModifier, matrix.length
 				+ rowFieldPosModifier + 1);
-		terminal.putCharacter('\u2554');
-		for (int i = 0; i < StatusLine.getInstance().toString().length(); i++) {
-			terminal.putCharacter('\u2550');
+		this.terminal.putCharacter('\u2554');
+		for (int i = 0; i < this.statusLine.toString().length(); i++) {
+			this.terminal.putCharacter('\u2550');
 		}
-		terminal.putCharacter('\u2557');
-		terminal.moveCursor(colLinePosModifier, matrix.length
+		this.terminal.putCharacter('\u2557');
+		this.terminal.moveCursor(colLinePosModifier, matrix.length
 				+ rowFieldPosModifier + 2);
-		terminal.putCharacter('\u2551');
+		this.terminal.putCharacter('\u2551');
+		this.statusLine.setTimeRow(matrix.length + rowFieldPosModifier + 2);
+		this.statusLine.setTimeCol(colLinePosModifier + this.statusLine.toString().indexOf("Time: ") + 7);
 		drawSatusLine();
-		terminal.putCharacter('\u2551');
-		terminal.moveCursor(colLinePosModifier, matrix.length
+		this.terminal.putCharacter('\u2551');
+		this.terminal.moveCursor(colLinePosModifier, matrix.length
 				+ rowFieldPosModifier + 3);
-		terminal.putCharacter('\u255a');
-		for (int i = 0; i < StatusLine.getInstance().toString().length(); i++) {
-			terminal.putCharacter('\u2550');
+		this.terminal.putCharacter('\u255a');
+		for (int i = 0; i < this.statusLine.toString().length(); i++) {
+			this.terminal.putCharacter('\u2550');
 		}
-		terminal.putCharacter('\u255d');
+		this.terminal.putCharacter('\u255d');
 		
 		String info = "Arrows - control player,  Q - quit to menu,  U - undo";
-		int colInfoPosModifier = (screenSize.getColumns() - info.length()) / 2;
+		int colInfoPosModifier = (this.scrColumns - info.length()) / 2;
 
-		terminal.moveCursor(colInfoPosModifier, matrix.length
+		this.terminal.moveCursor(colInfoPosModifier, matrix.length
 				+ rowFieldPosModifier + 4);
 		drawInfo(info);
 	}
@@ -94,15 +97,15 @@ public class LanternaDrawer {
 	}
 
 	private void drawSatusLine() {
-		String statusLine = StatusLine.getInstance().toString();
+		String statusLine = this.statusLine.toString();
 		for (int i = 0; i < statusLine.length(); i++) {
-			terminal.putCharacter(statusLine.charAt(i));
+			this.terminal.putCharacter(statusLine.charAt(i));
 		}
 	}
 
 	private void drawInfo(String info) {
 		for (int i = 0; i < info.length(); i++) {
-			terminal.putCharacter(info.charAt(i));
+			this.terminal.putCharacter(info.charAt(i));
 		}
 	}
 }

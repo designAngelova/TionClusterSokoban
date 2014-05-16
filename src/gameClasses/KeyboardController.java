@@ -1,27 +1,42 @@
 package gameClasses;
-import java.nio.charset.Charset;
 
+import java.text.MessageFormat;
+import java.util.Date;
 
-
-import com.googlecode.lanterna.TerminalFacade;
 import com.googlecode.lanterna.input.Key;
 import com.googlecode.lanterna.terminal.Terminal;
 
 public class KeyboardController extends GameController {
+	
 	private Terminal terminal;
 
-	public KeyboardController(Terminal terminal) {
-		this.terminal = terminal;
+	public KeyboardController() {
+		this.terminal = GameTerminal.getInstance().getTerminal();
 	}
 
 	@Override
 	public Controls getAction() {
 		StatusLine line = StatusLine.getInstance();
+		int timeCol = line.getTimeCol();
+		int timeRow = line.getTimeRow();
+		long startTime = line.getTime();
 		Key key = this.terminal.readInput();
 		Controls control = null;
 		String keyValue;
-		while (key == null) {
+		String time;
+		int count = 0;
+		while (key == null) {			
 			key = terminal.readInput();
+			if (count == 500000) {
+				time = MessageFormat.format("{0, time, mm:ss.SSS}", new Date().getTime() - startTime);
+				this.terminal.moveCursor(timeCol, timeRow);
+				for (int i = 0; i < time.length(); i++) {
+					this.terminal.putCharacter(time.charAt(i));
+				}
+				count = 0;
+			}
+			
+			count++;
 		}
 
 		keyValue = key.getKind().name();
