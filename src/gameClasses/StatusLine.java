@@ -1,5 +1,6 @@
 package gameClasses;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -98,9 +99,8 @@ public class StatusLine implements Comparable<StatusLine> {
 
 	public String toString() {
 
-		String playerInfo = String.format("%5d %5s\t%.2f\t%5d",
-				this.getLevel(), this.getPlayerName(), this.getTime(),
-				this.getMoves());
+		String playerInfo = MessageFormat.format("-== Player: {0}    Level: {1}    Moves: {2}    Time: {3} ==-",
+				 this.getPlayerName(), this.getLevel(), this.getTime(), this.getMoves());
 		return playerInfo;
 
 	}

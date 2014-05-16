@@ -3,8 +3,8 @@ package gameClasses;
 import com.googlecode.lanterna.terminal.Terminal;
 
 public class LanternaDrawer {
+	private Terminal terminal = GameTerminal.getInstance().getTerminal();
 	public void drawGameField(GameField field) {
-		Terminal terminal = GameTerminal.getInstance().getTerminal();
 		terminal.clearScreen();
 		char[][] matrix = field.getFieldMatrix();
 		for (int row = 0; row < matrix.length; row++) {
@@ -59,12 +59,9 @@ public class LanternaDrawer {
 	}
 
 	public void drawSatusLine() {
-		String name = StatusLine.getInstance().getPlayerName();
-		int level = StatusLine.getInstance().getLevel();
-		int moves = StatusLine.getInstance().getMoves();
-		int time = StatusLine.getInstance().getTime();
-		String statusLine = "-== Player: " + name + "  -  Level: " + level
-				+ "  -  Moves: " + moves + "  -  Time: " + time + " ==-";
-		
+		String statusLine = StatusLine.getInstance().toString();
+		for (int i = 0; i < statusLine.length(); i++) {
+			terminal.putCharacter(statusLine.charAt(i));
+		}
 	}
 }
