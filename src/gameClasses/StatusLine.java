@@ -1,5 +1,6 @@
 package gameClasses;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,21 +12,30 @@ import java.util.List;
 
 public class StatusLine implements Comparable<StatusLine> {
 
-	private String playerName;
-	private int level;
-	private int moves;
-	private double time;
-	private static List<StatusLine> saveObjects = new ArrayList<StatusLine>();
-
-	public StatusLine(String playerName) {
-
-		setPlayerName(playerName);
+	//start Singleton pattern
+	private static StatusLine instance = null;
+	   
+	protected StatusLine() {
+		setPlayerName("Guest");
 		setLevel(1);
 		setMoves(0);
 		setTime(0);
 		getSaveObjects().add(this);
-
-	}
+	   }
+	  
+	public static StatusLine getInstance() {
+	      if(instance == null) {
+	         instance = new StatusLine();
+	      }
+	      return instance;
+	   }
+	//end Singleton pattern
+	   
+	private String playerName;
+	private int level;
+	private int moves;
+	private int time;
+	private static List<StatusLine> saveObjects = new ArrayList<StatusLine>();
 
 	public String getPlayerName() {
 
@@ -35,7 +45,7 @@ public class StatusLine implements Comparable<StatusLine> {
 
 	public void setPlayerName(String playerName) {
 		if (playerName.equals(" ")) {
-			this.playerName = "guest";
+			this.playerName = "Guest";
 		} else {
 			this.playerName = playerName;
 		}
@@ -69,13 +79,13 @@ public class StatusLine implements Comparable<StatusLine> {
 		}
 	}
 
-	public double getTime() {
+	public int getTime() {
 
 		return this.time;
 
 	}
 
-	public void setTime(double time) {
+	public void setTime(int time) {
 		if (time < 0) {
 			this.time = 0;
 		} else {
@@ -89,9 +99,8 @@ public class StatusLine implements Comparable<StatusLine> {
 
 	public String toString() {
 
-		String playerInfo = String.format("%5d %5s\t%.2f\t%5d",
-				this.getLevel(), this.getPlayerName(), this.getTime(),
-				this.getMoves());
+		String playerInfo = MessageFormat.format("-== Player: {0}    Level: {1}    Moves: {2}    Time: {3} ==-",
+				 this.getPlayerName(), this.getLevel(), this.getMoves(), this.getTime());
 		return playerInfo;
 
 	}
