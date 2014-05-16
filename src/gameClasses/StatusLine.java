@@ -100,7 +100,7 @@ public class StatusLine implements Comparable<StatusLine> {
 	public String toString() {
 
 		String playerInfo = MessageFormat.format("-== Player: {0}    Level: {1}    Moves: {2}    Time: {3} ==-",
-				 this.getPlayerName(), this.getLevel(), this.getTime(), this.getMoves());
+				 this.getPlayerName(), this.getLevel(), this.getMoves(), this.getTime());
 		return playerInfo;
 
 	}

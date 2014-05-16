@@ -16,7 +16,7 @@ public class KeyboardController extends GameController {
 
 	@Override
 	public Controls getAction() {
-
+		StatusLine line = StatusLine.getInstance();
 		Key key = this.terminal.readInput();
 		Controls control = null;
 		String keyValue;
@@ -42,16 +42,16 @@ public class KeyboardController extends GameController {
 		}
 		
 		case "ArrowUp":
-			System.out.println(key.getKind().name());
+			line.setMoves(line.getMoves() + 1);
 			return Controls.UP;
 		case "ArrowRight":
-			System.out.println(key.getKind().name());
+			line.setMoves(line.getMoves() + 1);
 			return Controls.RIGHT;
 		case "ArrowDown":
-			System.out.println(key.getKind().name());
+			line.setMoves(line.getMoves() + 1);
 			return Controls.DOWN;
 		case "ArrowLeft":
-			System.out.println(key.getKind().name());
+			line.setMoves(line.getMoves() + 1);
 			return Controls.LEFT;
 		}
 

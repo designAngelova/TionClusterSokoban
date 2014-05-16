@@ -8,7 +8,7 @@ import com.googlecode.lanterna.terminal.Terminal;
 public class Game {
 	private Terminal terminal;
 	private StatusLine statusLine;
-	private String drawer;
+	private LanternaDrawer drawer;
 	private GameField field;
 	private String gameMenu;
 	private String nextMenu;
@@ -18,16 +18,17 @@ public class Game {
 
 	public Game() {
 		this.terminal = GameTerminal.getInstance().getTerminal();
+		this.drawer = new LanternaDrawer();
+		this.field = new GameField();
+		this.controller = new KeyboardController(this.terminal);
+		this.statusLine = StatusLine.getInstance();
 	}
 
 	public void runGame() {
-		LanternaDrawer drawer = new LanternaDrawer();
-		GameField field = new GameField();
-		field.loadLevel(1);
+		this.field.loadLevel(1);
 		this.terminal.enterPrivateMode();
 		this.terminal.setCursorVisible(false);
-		GameController gameController = new KeyboardController(this.terminal);
-		Controls key = gameController.getAction();
+		Controls key = controller.getAction();
 		while (key != Controls.EXIT) {
 			if (field.checkIsSolved()) {
 				this.terminal.clearScreen();
@@ -42,9 +43,9 @@ public class Game {
 				sleep(50000);
 				break;
 			}
-			key = gameController.getAction();
+			key = controller.getAction();
 			field.move(key);
-			drawer.drawGameField(field);
+			this.drawer.drawGameField(field);
 		}
 		this.terminal.exitPrivateMode();
 	}
