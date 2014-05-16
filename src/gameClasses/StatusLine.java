@@ -1,4 +1,4 @@
-package gameClasses;
+package game;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class StatusLine implements Comparable<StatusLine> {
 
 	//start Singleton pattern
 	private static StatusLine instance = null;
-	   
+
 	protected StatusLine() {
 		setTimeRow(0);
 		setTimeCol(0);
@@ -23,9 +23,9 @@ public class StatusLine implements Comparable<StatusLine> {
 		setLevel(1);
 		setMoves(0);
 		setTime(0);
-		getSaveObjects().add(this);
+
 	   }
-	  
+
 	public static StatusLine getInstance() {
 	      if(instance == null) {
 	         instance = new StatusLine();
@@ -33,14 +33,14 @@ public class StatusLine implements Comparable<StatusLine> {
 	      return instance;
 	   }
 	//end Singleton pattern
-	
+
 	private int timeRow;
 	private int timeCol;
 	private String playerName;
 	private int level;
 	private int moves;
 	private long time;
-	private static List<StatusLine> saveObjects = new ArrayList<StatusLine>();
+	
 
 	public String getPlayerName() {
 
@@ -94,15 +94,20 @@ public class StatusLine implements Comparable<StatusLine> {
 			this.time = time;
 	}
 
-	public static List<StatusLine> getSaveObjects() {
-		return saveObjects;
-	}
-
 	public String toString() {
 
 		String playerInfo = MessageFormat.format("-== Player: {0}    Level: {1, number, #00}    Moves: {2, number, #00000}    Time: {3, time, mm:ss.SSS} ==-",
 				 this.getPlayerName(), this.getLevel(), this.getMoves(), new Date().getTime() - this.getTime());
 		return playerInfo;
+
+	}
+	
+	public String toScoreString() {
+		
+			String playerInfo = String.format("%s %d %d",
+					 this.getPlayerName(), (int)this.getTime(),
+					this.getMoves());
+			return playerInfo;
 
 	}
 
