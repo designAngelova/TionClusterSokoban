@@ -13,7 +13,7 @@ public class Game {
 	private String gameMenu;
 	private String nextMenu;
 	private String levelMenu;
-	private String scores;
+	private Scores scores;
 	private GameController controller;
 
 	public Game() {
@@ -22,15 +22,19 @@ public class Game {
 		this.field = new GameField();
 		this.controller = new KeyboardController();
 		this.statusLine = StatusLine.getInstance();
+		this.scores = new Scores();
 	}
 
 	public void runGame() {
-		this.field.loadLevel(1);
+		int level = 1;
+		this.field.loadLevel(level);
 		this.terminal.enterPrivateMode();
 		this.terminal.setCursorVisible(false);
 		Controls key = controller.getAction();
 		while (key != Controls.EXIT) {
 			if (field.checkIsSolved()) {
+				scores.addScore(this.statusLine);
+				scores.saveScores(level);
 				this.terminal.clearScreen();
 				this.terminal.putCharacter('B');
 				this.terminal.putCharacter('R');
