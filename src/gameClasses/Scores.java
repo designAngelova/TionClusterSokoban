@@ -38,6 +38,15 @@ public class Scores {
 			temp.setMoves(Integer.parseInt(parts[2]));
 			temp.setTime(Long.parseLong(parts[1]));
 			
+			  try
+	        {
+	            Date time = simpleDateFormat.parse(parts[1]);
+	          }
+	        catch (Exception ex)
+	        {
+	            System.out.println("Exception "+ex);
+	        }
+	        // temp.setTime(...); help!
 			addScore(temp);
 		}
 	}
