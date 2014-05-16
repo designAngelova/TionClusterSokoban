@@ -3,6 +3,7 @@ package gameClasses;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Stack;
 
@@ -47,8 +48,8 @@ public class GameField {
 
 			for (int row = 1; row < this.getFieldMatrix().length; row++) {
 				for (int col = 0; col < this.getFieldMatrix()[0].length; col++) {
-					this.getFieldMatrix()[row - 1][col] = fileData.get(row).charAt(
-							col);
+					this.getFieldMatrix()[row - 1][col] = fileData.get(row)
+							.charAt(col);
 				}
 			}
 
@@ -56,11 +57,12 @@ public class GameField {
 			return false;
 		}
 
+		StatusLine.getInstance().setTime(new Date().getTime());
 		return true;
 	}
 
 	public void move(Controls direction) {
-		
+
 		int playerRow = 0;
 		int playerCol = 0;
 		int rowMod = 0;
@@ -101,10 +103,12 @@ public class GameField {
 			if (this.getFieldMatrix()[playerRow + rowMod][playerCol + colMod] == '0') {
 				moveObject(playerRow, playerCol, playerRow + rowMod, playerCol
 						+ colMod, 'P', playerOnGoal);
-			} else if (this.getFieldMatrix()[playerRow + rowMod][playerCol + colMod] == 'G') {
+			} else if (this.getFieldMatrix()[playerRow + rowMod][playerCol
+					+ colMod] == 'G') {
 				moveObject(playerRow, playerCol, playerRow + rowMod, playerCol
 						+ colMod, 'D', playerOnGoal);
-			} else if (this.getFieldMatrix()[playerRow + rowMod][playerCol + colMod] == 'B') {
+			} else if (this.getFieldMatrix()[playerRow + rowMod][playerCol
+					+ colMod] == 'B') {
 				if (this.getFieldMatrix()[playerRow + (2 * rowMod)][playerCol
 						+ (2 * colMod)] == 'G') {
 					moveObject(playerRow + rowMod, playerCol + colMod,
@@ -120,7 +124,8 @@ public class GameField {
 					moveObject(playerRow, playerCol, playerRow + rowMod,
 							playerCol + colMod, 'P', playerOnGoal);
 				}
-			} else if (this.getFieldMatrix()[playerRow + rowMod][playerCol + colMod] == 'X') {
+			} else if (this.getFieldMatrix()[playerRow + rowMod][playerCol
+					+ colMod] == 'X') {
 				if (this.getFieldMatrix()[playerRow + (2 * rowMod)][playerCol
 						+ (2 * colMod)] == 'G') {
 					moveObject(playerRow + rowMod, playerCol + colMod,
@@ -137,6 +142,8 @@ public class GameField {
 							playerCol + colMod, 'D', playerOnGoal);
 				}
 			}
+
+			this.history.push(this.fieldMatrix);
 
 		} catch (Exception e) {
 		}

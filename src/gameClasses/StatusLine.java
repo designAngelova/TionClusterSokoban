@@ -3,6 +3,7 @@ package gameClasses;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public class StatusLine implements Comparable<StatusLine> {
 	private String playerName;
 	private int level;
 	private int moves;
-	private int time;
+	private long time;
 	private static List<StatusLine> saveObjects = new ArrayList<StatusLine>();
 
 	public String getPlayerName() {
@@ -79,18 +80,14 @@ public class StatusLine implements Comparable<StatusLine> {
 		}
 	}
 
-	public int getTime() {
+	public long getTime() {
 
 		return this.time;
 
 	}
 
-	public void setTime(int time) {
-		if (time < 0) {
-			this.time = 0;
-		} else {
+	public void setTime(long time) {
 			this.time = time;
-		}
 	}
 
 	public static List<StatusLine> getSaveObjects() {
@@ -99,8 +96,8 @@ public class StatusLine implements Comparable<StatusLine> {
 
 	public String toString() {
 
-		String playerInfo = MessageFormat.format("-== Player: {0}    Level: {1}    Moves: {2}    Time: {3} ==-",
-				 this.getPlayerName(), this.getLevel(), this.getMoves(), this.getTime());
+		String playerInfo = MessageFormat.format("-== Player: {0}    Level: {1, number, #00}    Moves: {2, number, #00000}    Time: {3, time, mm:ss.SSS} ==-",
+				 this.getPlayerName(), this.getLevel(), this.getMoves(), new Date().getTime() - this.getTime());
 		return playerInfo;
 
 	}
