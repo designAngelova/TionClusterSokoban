@@ -58,14 +58,6 @@ public class KeyboardController extends GameController {
 		return control;
 	}
 
-	public static void main(String[] arg) {
-		Terminal terminal = TerminalFacade.createTerminal(System.in,
-				System.out, Charset.forName("UTF8"));
-		terminal.enterPrivateMode();
-		KeyboardController kontrola = new KeyboardController(terminal);
-
-		System.out.println(kontrola.getAction().name());
-
-	}
+	
 }
 
