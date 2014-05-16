@@ -105,7 +105,7 @@ public class StatusLine implements Comparable<StatusLine> {
 	public String toScoreString() {
 		
 			String playerInfo = String.format("%s %d %d",
-					 this.getPlayerName(), (int)this.getTime(),
+					 this.getPlayerName(), new Date().getTime() - this.getTime(),
 					this.getMoves());
 			return playerInfo;
 
