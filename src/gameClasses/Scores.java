@@ -60,9 +60,10 @@ public class Scores {
 
 	public void addScore() throws Exception {
 		StatusLine status = StatusLine.getInstance();
+		this.scores.clear();
 	    loadScores(status.getLevel());
 		this.scores.add(status);
-		StatusLine.sortList(this.scores);
+		sortScores();
 		if (this.scores.size() > 10) {
 			this.scores.remove(10);
 		}
@@ -90,5 +91,9 @@ public class Scores {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void sortScores() {
+		Collections.sort(this.scores);
 	}
 }

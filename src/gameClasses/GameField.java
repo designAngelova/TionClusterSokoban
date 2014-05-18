@@ -23,7 +23,8 @@ public class GameField {
 				}
 			}
 		}
-
+		
+		StatusLine.getInstance().setTime(new Date().getTime() - StatusLine.getInstance().getTime());
 		return true;
 	}
 
