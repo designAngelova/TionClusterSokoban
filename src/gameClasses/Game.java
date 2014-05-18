@@ -25,7 +25,7 @@ public class Game {
 		this.scores = new Scores();
 	}
 
-	public void runGame() {
+	public void runGame() throws Exception {
 		int level = 1;
 		this.field.loadLevel(level);
 		this.terminal.enterPrivateMode();
@@ -33,8 +33,7 @@ public class Game {
 		Controls key = controller.getAction();
 		while (key != Controls.EXIT) {
 			if (field.checkIsSolved()) {
-				scores.addScore(this.statusLine);
-				scores.saveScores(level);
+				this.scores.addScore();
 				this.terminal.clearScreen();
 				this.terminal.putCharacter('B');
 				this.terminal.putCharacter('R');

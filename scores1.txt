@@ -1,2 +1,3 @@
--== Player: Guest    Level:  01    Moves:  00001    Time:  00:04.965 ==-
--== Player: Guest    Level:  01    Moves:  00001    Time:  00:04.966 ==-
+Guest 1400403495893 1
+Guest 140953 1
+Guest 1707 1

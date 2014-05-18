@@ -1,4 +1,4 @@
-package game;
+package gameClasses;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
