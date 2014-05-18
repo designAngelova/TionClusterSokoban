@@ -43,7 +43,7 @@ public class Game {
 				this.terminal.putCharacter('!');
 				this.terminal.putCharacter('!');
 				this.terminal.putCharacter('!');
-				sleep(50000);
+				sleep(3000);
 				break;
 			}
 			key = controller.getAction();
