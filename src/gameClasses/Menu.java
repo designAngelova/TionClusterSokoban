@@ -24,9 +24,9 @@ public class Menu {
 	}
 
 	public void selectNext() {
-		for (int i = 0; i < this.items.size() - 1; i++) {
+		for (int i = 0; i < this.items.size(); i++) {
 			if (this.items.get(i).getIsSelected()) {
-				if (this.items.get(i).getId() == items.size() - 1) {
+				if (i == this.items.size() - 1) {
 					this.items.get(i).setIsSelected(false);
 					this.items.get(0).setIsSelected(true);
 				} else {
@@ -41,9 +41,9 @@ public class Menu {
 	}
 
 	public void selectPrev() {
-		for (int i = 0; i < items.size() - 1; i++) {
+		for (int i = 0; i < items.size(); i++) {
 			if (this.items.get(i).getIsSelected()) {
-				if (items.get(i).getId() == 0) {
+				if (i == 0) {
 					items.get(i).setIsSelected(false);
 					items.get(items.size() - 1).setIsSelected(true);
 				} else {
@@ -58,7 +58,7 @@ public class Menu {
 
 	public int getSelectedId() {
 		int a = 0;
-		for (int i = 0; i < items.size() - 1; i++) {
+		for (int i = 0; i < items.size(); i++) {
 			if (items.get(i).getIsSelected()) {
 				a = items.get(i).getId();
 				break;

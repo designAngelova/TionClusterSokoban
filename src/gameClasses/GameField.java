@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.Stack;
 
 public class GameField {
+	
+	public GameField() {
+		this.history = new Stack<char[][]>();
+	}
+	
 	private char[][] fieldMatrix;
 	private Stack<char[][]> history;
 
@@ -59,6 +64,7 @@ public class GameField {
 		}
 
 		StatusLine.getInstance().setTime(new Date().getTime());
+		this.history.push(this.fieldMatrix);
 		return true;
 	}
 
@@ -83,7 +89,7 @@ public class GameField {
 			colMod = -1;
 			break;
 		default:
-			break;
+			return;
 		}
 
 		try {
@@ -143,9 +149,15 @@ public class GameField {
 							playerCol + colMod, 'D', playerOnGoal);
 				}
 			}
-
-			this.history.push(this.fieldMatrix);
-
+			
+			char[][] tmpField = new char[this.fieldMatrix.length][this.fieldMatrix[0].length];
+			for(int row = 0; row < this.fieldMatrix.length; row++){
+				for (int col = 0; col < this.fieldMatrix[0].length; col++) {
+					tmpField[row][col] = this.fieldMatrix[row][col];
+				}
+			}
+			
+			this.history.push(tmpField);
 		} catch (Exception e) {
 		}
 	}

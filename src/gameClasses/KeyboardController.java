@@ -27,16 +27,18 @@ public class KeyboardController extends GameController {
 		int count = 0;
 		while (key == null) {			
 			key = terminal.readInput();
-			if (count == 500000) {
-				time = MessageFormat.format("{0, time, mm:ss.SSS}", new Date().getTime() - startTime);
-				this.terminal.moveCursor(timeCol, timeRow);
-				for (int i = 0; i < time.length(); i++) {
-					this.terminal.putCharacter(time.charAt(i));
+			if (line.getGameScreen() == "play level") {
+				if (count == 500000) {
+					time = MessageFormat.format("{0, time, mm:ss.SSS}", new Date().getTime() - startTime);
+					this.terminal.moveCursor(timeCol, timeRow);
+					for (int i = 0; i < time.length(); i++) {
+						this.terminal.putCharacter(time.charAt(i));
+					}
+					count = 0;
 				}
-				count = 0;
+				
+				count++;
 			}
-			
-			count++;
 		}
 
 		keyValue = key.getKind().name();

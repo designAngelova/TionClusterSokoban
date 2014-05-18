@@ -88,8 +88,25 @@ public class LanternaDrawer {
 		drawInfo(info);
 	}
 
-	public void drawMenu(Scores menu) {
-
+	public void drawMenu(Menu menu) {
+		this.terminal.clearScreen();
+		int colFieldPosModifier = (this.scrColumns - 9) / 2;
+		int rowFieldPosModifier = (this.scrRows - menu.getItems().size()) / 2;
+		this.terminal.applyForegroundColor(Terminal.Color.RED);
+		for (int row = 0; row < menu.getItems().size(); row++) {
+			this.terminal.moveCursor(colFieldPosModifier, row + rowFieldPosModifier);
+			this.terminal.applyBackgroundColor(Terminal.Color.DEFAULT);
+			if (menu.getItems().get(row).getIsSelected()) {
+				this.terminal.applyBackgroundColor(Terminal.Color.YELLOW);
+			}
+			
+			for (int col = 0; col < menu.getItems().get(row).getText().length(); col++) {
+				this.terminal.putCharacter(menu.getItems().get(row).getText().charAt(col));
+			}				
+		}
+		
+		this.terminal.applyForegroundColor(Terminal.Color.DEFAULT);
+		this.terminal.applyBackgroundColor(Terminal.Color.DEFAULT);
 	}
 
 	public void drawScores(Scores scores) {

@@ -6,6 +6,6 @@ public class SokobanGame {
 
 	public static void main(String[] args) throws Exception {
 		Game newGame = new Game();
-		newGame.runGame();
+		newGame.startGame();
 	}
 }

@@ -1,10 +1,7 @@
 package gameClasses;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 /**
  *
@@ -17,6 +14,7 @@ public class StatusLine implements Comparable<StatusLine> {
 	private static StatusLine instance = null;
 
 	protected StatusLine() {
+		setGameScreen("intro");
 		setTimeRow(0);
 		setTimeCol(0);
 		setPlayerName("Guest");
@@ -34,6 +32,7 @@ public class StatusLine implements Comparable<StatusLine> {
 	   }
 	//end Singleton pattern
 
+	private String gameScreen;
 	private int timeRow;
 	private int timeCol;
 	private String playerName;
@@ -141,5 +140,13 @@ public class StatusLine implements Comparable<StatusLine> {
 
 	public void setTimeCol(int timeCol) {
 		this.timeCol = timeCol;
+	}
+
+	public String getGameScreen() {
+		return gameScreen;
+	}
+
+	public void setGameScreen(String gameScreen) {
+		this.gameScreen = gameScreen;
 	}
 }
