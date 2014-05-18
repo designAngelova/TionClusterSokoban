@@ -15,7 +15,7 @@ public class KeyboardController extends GameController {
 	}
 
 	@Override
-	public Controls getAction() {
+	public Controls getAction(boolean inProgress) {
 		StatusLine line = StatusLine.getInstance();
 		int timeCol = line.getTimeCol();
 		int timeRow = line.getTimeRow();
@@ -27,7 +27,7 @@ public class KeyboardController extends GameController {
 		int count = 0;
 		while (key == null) {			
 			key = terminal.readInput();
-			if (line.getGameScreen() == "play level") {
+			if (inProgress) {
 				if (count == 500000) {
 					time = MessageFormat.format("{0, time, mm:ss.SSS}", new Date().getTime() - startTime);
 					this.terminal.moveCursor(timeCol, timeRow);
@@ -48,7 +48,6 @@ public class KeyboardController extends GameController {
 			System.out.println(key.getKind().name());
 			return Controls.SELECT;
 		case "NormalKey": {
-			System.out.println(key.getCharacter());
 			if (key.getCharacter() == 'q' || key.getCharacter() == 'Q') {
 				return Controls.EXIT;
 			}

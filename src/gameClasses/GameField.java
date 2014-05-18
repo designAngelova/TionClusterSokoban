@@ -8,16 +8,19 @@ import java.util.List;
 import java.util.Stack;
 
 public class GameField {
-	
+
 	public GameField() {
 		this.history = new Stack<char[][]>();
 	}
-	
+
 	private char[][] fieldMatrix;
 	private Stack<char[][]> history;
 
 	public void undo() {
-		this.fieldMatrix = this.history.pop();
+		if (!this.history.isEmpty()) {
+			System.out.println(this.history.size());
+			this.fieldMatrix = this.history.pop();
+		}
 	}
 
 	public boolean checkIsSolved() {
@@ -28,8 +31,9 @@ public class GameField {
 				}
 			}
 		}
-		
-		StatusLine.getInstance().setTime(new Date().getTime() - StatusLine.getInstance().getTime());
+
+		StatusLine.getInstance().setTime(
+				new Date().getTime() - StatusLine.getInstance().getTime());
 		return true;
 	}
 
@@ -64,7 +68,6 @@ public class GameField {
 		}
 
 		StatusLine.getInstance().setTime(new Date().getTime());
-		this.history.push(this.fieldMatrix);
 		return true;
 	}
 
@@ -78,15 +81,19 @@ public class GameField {
 		switch (direction) {
 		case UP:
 			rowMod = -1;
+			this.history.push(getCopyOfField());
 			break;
 		case RIGHT:
 			colMod = 1;
+			this.history.push(getCopyOfField());
 			break;
 		case DOWN:
 			rowMod = 1;
+			this.history.push(getCopyOfField());
 			break;
 		case LEFT:
 			colMod = -1;
+			this.history.push(getCopyOfField());
 			break;
 		default:
 			return;
@@ -149,15 +156,7 @@ public class GameField {
 							playerCol + colMod, 'D', playerOnGoal);
 				}
 			}
-			
-			char[][] tmpField = new char[this.fieldMatrix.length][this.fieldMatrix[0].length];
-			for(int row = 0; row < this.fieldMatrix.length; row++){
-				for (int col = 0; col < this.fieldMatrix[0].length; col++) {
-					tmpField[row][col] = this.fieldMatrix[row][col];
-				}
-			}
-			
-			this.history.push(tmpField);
+
 		} catch (Exception e) {
 		}
 	}
@@ -175,5 +174,16 @@ public class GameField {
 
 	public char[][] getFieldMatrix() {
 		return fieldMatrix;
+	}
+
+	private char[][] getCopyOfField() {
+		char[][] tmpField = new char[this.fieldMatrix.length][this.fieldMatrix[0].length];
+		for (int row = 0; row < this.fieldMatrix.length; row++) {
+			for (int col = 0; col < this.fieldMatrix[0].length; col++) {
+				tmpField[row][col] = this.fieldMatrix[row][col];
+			}
+		}
+		
+		return tmpField;
 	}
 }

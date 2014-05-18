@@ -2,5 +2,5 @@ package gameClasses;
 
 
 public abstract class GameController {
-	abstract public Controls getAction() ;
+	abstract public Controls getAction(boolean inProgress) ;
 }

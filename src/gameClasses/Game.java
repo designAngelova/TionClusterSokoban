@@ -2,8 +2,6 @@ package gameClasses;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.googlecode.lanterna.terminal.Terminal;
 
@@ -53,9 +51,9 @@ public class Game {
 				break;
 			case "menu": {
 				this.drawer.drawMenu(this.gameMenu);
-				Controls key = controller.getAction();
+				Controls key = controller.getAction(false);
 				while (key == null) {
-					key = controller.getAction();
+					key = controller.getAction(false);
 				}
 
 				switch (key) {
@@ -119,9 +117,9 @@ public class Game {
 				break;
 			case "select play level": {
 				this.drawer.drawMenu(this.levelMenu);
-				Controls key = controller.getAction();
+				Controls key = controller.getAction(false);
 				while (key == null) {
-					key = controller.getAction();
+					key = controller.getAction(false);
 				}
 
 				switch (key) {
@@ -170,7 +168,7 @@ public class Game {
 	private void playLevel(int level) throws Exception {
 		this.field.loadLevel(level);
 		this.drawer.drawGameField(this.field);
-		Controls key = controller.getAction();
+		Controls key = controller.getAction(true);
 		while (key != Controls.EXIT) {
 			if (key == Controls.UNDO) {
 				this.field.undo();
@@ -185,7 +183,7 @@ public class Game {
 				return;
 			}
 
-			key = this.controller.getAction();
+			key = this.controller.getAction(true);
 		}
 
 		this.statusLine.setGameScreen("menu");
