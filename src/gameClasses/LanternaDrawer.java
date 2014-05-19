@@ -1,5 +1,7 @@
 package gameClasses;
 
+import java.text.MessageFormat;
+
 import com.googlecode.lanterna.terminal.Terminal;
 
 public class LanternaDrawer {
@@ -88,10 +90,16 @@ public class LanternaDrawer {
 		drawInfo(info);
 	}
 
-	public void drawMenu(Menu menu) {
+	public void drawMenu(Menu menu, String nameOfMenu) {
 		this.terminal.clearScreen();
-		int colFieldPosModifier = (this.scrColumns - 9) / 2;
+		int colFieldPosModifier = (this.scrColumns - 15) / 2;
 		int rowFieldPosModifier = (this.scrRows - menu.getItems().size()) / 2;
+		this.terminal.applyForegroundColor(Terminal.Color.CYAN);
+		this.terminal.moveCursor((this.scrColumns - nameOfMenu.length()) / 2, rowFieldPosModifier - 4);
+		for (int col = 0; col < nameOfMenu.length(); col++) {
+			this.terminal.putCharacter(nameOfMenu.charAt(col));
+		}
+		
 		this.terminal.applyForegroundColor(Terminal.Color.RED);
 		for (int row = 0; row < menu.getItems().size(); row++) {
 			this.terminal.moveCursor(colFieldPosModifier, row + rowFieldPosModifier);
@@ -100,8 +108,16 @@ public class LanternaDrawer {
 				this.terminal.applyBackgroundColor(Terminal.Color.YELLOW);
 			}
 			
-			for (int col = 0; col < menu.getItems().get(row).getText().length(); col++) {
-				this.terminal.putCharacter(menu.getItems().get(row).getText().charAt(col));
+			String item = menu.getItems().get(row).getText();
+			if (item.length() == 1) {
+				item = padRight(padLeft(item, 8), 15);
+			} else if(item.length() == 2){
+				item = padRight(padLeft(item, 8), 15);
+			} else {
+				item = padRight(item, 15);
+			}
+			for (int col = 0; col < item.length(); col++) {
+				this.terminal.putCharacter(item.charAt(col));
 			}				
 		}
 		
@@ -109,8 +125,44 @@ public class LanternaDrawer {
 		this.terminal.applyBackgroundColor(Terminal.Color.DEFAULT);
 	}
 
-	public void drawScores(Scores scores) {
-
+	public void drawScores(Scores scores, int level) {
+		this.terminal.clearScreen();
+		int colFieldPosModifier = (this.scrColumns - 36) / 2;
+		int rowFieldPosModifier = (this.scrRows - scores.getList().size()) / 2;
+		this.terminal.applyForegroundColor(Terminal.Color.YELLOW);
+		
+		String levelRow = "SCORES FOR LEVEL " + level;
+		this.terminal.moveCursor((this.scrColumns - levelRow.length()) / 2, rowFieldPosModifier - 4);
+		for (int col = 0; col < levelRow.length(); col++) {
+			this.terminal.putCharacter(levelRow.charAt(col));
+		}
+		
+		String columnRow = "POS  PLAYER        MOVES    TIME   ";
+		this.terminal.moveCursor((this.scrColumns - columnRow.length()) / 2, rowFieldPosModifier - 2);
+		for (int col = 0; col < columnRow.length(); col++) {
+			this.terminal.putCharacter(columnRow.charAt(col));
+		}
+		
+		int infoRow = 0;
+		for (int row = 0; row < scores.getList().size(); row++) {
+			this.terminal.moveCursor(colFieldPosModifier, row + rowFieldPosModifier);
+			String score = MessageFormat.format("{0} - {1}   {2, number, #00000}   {3, time, mm:ss.SSS}",
+					padLeft((row + 1) + "", 2), padRight(scores.getList().get(row).getPlayerName(), 10), scores.getList().get(row).getMoves(), scores.getList().get(row).getTime());
+			for (int col = 0; col < score.length(); col++) {
+				this.terminal.putCharacter(score.charAt(col));
+			}	
+			
+			infoRow = row;
+		}
+		
+		String infoText = "Press Enter to continue...";
+		this.terminal.moveCursor((this.scrColumns - infoText.length()) / 2, rowFieldPosModifier + infoRow + 2);
+		for (int col = 0; col < infoText.length(); col++) {
+			this.terminal.putCharacter(infoText.charAt(col));
+		}
+		
+		this.terminal.applyForegroundColor(Terminal.Color.DEFAULT);
+		this.terminal.applyBackgroundColor(Terminal.Color.DEFAULT);
 	}
 
 	private void drawSatusLine() {
@@ -125,4 +177,13 @@ public class LanternaDrawer {
 			this.terminal.putCharacter(info.charAt(i));
 		}
 	}
+	
+	private static String padRight(String s, int n) {
+	     return String.format("%1$-" + n + "s", s);  
+	}
+	
+	private static String padLeft(String s, int n) {
+	    return String.format("%1$" + n + "s", s);  
+	}
+
 }

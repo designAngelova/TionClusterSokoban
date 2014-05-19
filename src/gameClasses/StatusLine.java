@@ -48,7 +48,7 @@ public class StatusLine implements Comparable<StatusLine> {
 	}
 
 	public void setPlayerName(String playerName) {
-		if (playerName.equals(" ")) {
+		if (playerName.equals(" ") || playerName.equals("")) {
 			this.playerName = "Guest";
 		} else {
 			this.playerName = playerName;

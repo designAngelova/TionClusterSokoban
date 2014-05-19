@@ -23,13 +23,14 @@ public class Game {
 		this.controller = new KeyboardController();
 		this.statusLine = StatusLine.getInstance();
 		this.scores = new Scores();
-		this.statusLine = new StatusLine();
 		this.gameMenu = new Menu();
 		this.gameMenu.addItem(new MenuItem(1, "PLAY GAME", true));
 		this.gameMenu.addItem(new MenuItem(2, "SCORES", false));
 		this.gameMenu.addItem(new MenuItem(3, "CREDITS", false));
 		this.gameMenu.addItem(new MenuItem(4, "EXIT", false));
 		this.nextMenu = new Menu();
+		this.nextMenu.addItem(new MenuItem(1, "EXIT TO MENU", false));
+		this.nextMenu.addItem(new MenuItem(2, "PLAY NEXT LEVEL", true));
 		this.levelMenu = new Menu();
 		loadLevelMenu();
 	}
@@ -50,7 +51,7 @@ public class Game {
 			}
 				break;
 			case "menu": {
-				this.drawer.drawMenu(this.gameMenu);
+				this.drawer.drawMenu(this.gameMenu, "TION CLUSTER SOKOBAN");
 				Controls key = controller.getAction(false);
 				while (key == null) {
 					key = controller.getAction(false);
@@ -107,16 +108,16 @@ public class Game {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				this.drawer.drawScores(this.scores);
+				this.drawer.drawScores(this.scores, this.statusLine.getLevel());
 				this.statusLine.setGameScreen("menu");
 			}
 				break;
 			case "select next level": {
-
+				showNextMenu();
 			}
 				break;
 			case "select play level": {
-				this.drawer.drawMenu(this.levelMenu);
+				this.drawer.drawMenu(this.levelMenu, "SELECT LEVEL");
 				Controls key = controller.getAction(false);
 				while (key == null) {
 					key = controller.getAction(false);
@@ -141,8 +142,35 @@ public class Game {
 				}
 			}
 				break;
-			case "select score level": {
+			case "select scores level": {
+				Controls key = null;
+				while (key == null) {
+					this.drawer.drawMenu(this.levelMenu, "SELECT LEVEL");
+					key = controller.getAction(false);
 
+					switch (key) {
+					case UP: {
+						this.levelMenu.selectPrev();
+						key = null;
+					}
+						break;
+					case DOWN: {
+						this.levelMenu.selectNext();
+						key = null;
+					}
+						break;
+					case SELECT: {
+						this.statusLine
+								.setLevel(this.levelMenu.getSelectedId());
+					}
+						break;
+					default:
+						key = null;
+						break;
+					}
+				}
+
+				showScores();
 			}
 				break;
 			case "credits": {
@@ -166,6 +194,8 @@ public class Game {
 	}
 
 	private void playLevel(int level) throws Exception {
+		this.field.clearHistory();
+		this.statusLine.setMoves(0);
 		this.field.loadLevel(level);
 		this.drawer.drawGameField(this.field);
 		Controls key = controller.getAction(true);
@@ -184,6 +214,78 @@ public class Game {
 			}
 
 			key = this.controller.getAction(true);
+		}
+
+		this.statusLine.setGameScreen("menu");
+	}
+
+	private void showNextMenu() {
+		this.drawer.drawScores(this.scores, this.statusLine.getLevel());
+		Controls key = this.controller.getAction(false);
+		while (key != Controls.SELECT) {
+			key = this.controller.getAction(false);
+		}
+
+		key = null;
+		while (key == null) {
+			this.drawer.drawMenu(this.nextMenu, "SELECT ACTION");
+			key = this.controller.getAction(false);
+			switch (key) {
+			case UP: {
+				this.nextMenu.selectPrev();
+				key = null;
+			}
+				break;
+			case DOWN: {
+				this.nextMenu.selectNext();
+				key = null;
+			}
+				break;
+			case SELECT: {
+
+			}
+				break;
+
+			default: {
+				key = null;
+			}
+				break;
+			}
+		}
+
+		switch (this.nextMenu.getSelectedId()) {
+		case 1: {
+			this.statusLine.setGameScreen("menu");
+		}
+			break;
+		case 2: {
+			if (this.statusLine.getLevel() + 1 <= this.levelMenu.getItems()
+					.size()) {
+				this.statusLine.setLevel(this.statusLine.getLevel() + 1);
+				this.statusLine.setGameScreen("play level");
+			} else {
+				this.statusLine.setGameScreen("menu");
+			}
+
+		}
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	private void showScores() {
+		try {
+			this.scores.loadScores(this.statusLine.getLevel());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.drawer.drawScores(this.scores, this.statusLine.getLevel());
+		Controls key = this.controller.getAction(false);
+		while (key != Controls.SELECT) {
+			key = this.controller.getAction(false);
 		}
 
 		this.statusLine.setGameScreen("menu");

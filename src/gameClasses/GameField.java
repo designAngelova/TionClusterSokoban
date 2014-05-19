@@ -16,9 +16,12 @@ public class GameField {
 	private char[][] fieldMatrix;
 	private Stack<char[][]> history;
 
+	public void clearHistory() {
+		this.history.clear();
+	}
+	
 	public void undo() {
 		if (!this.history.isEmpty()) {
-			System.out.println(this.history.size());
 			this.fieldMatrix = this.history.pop();
 		}
 	}

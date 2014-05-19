@@ -22,6 +22,14 @@ public class Scores {
 	}
 
 	public void loadScores(int level) throws Exception {
+		this.scores.clear();
+		File scoreFile = new File("scores" + level + ".txt");
+
+		try {
+		    scoreFile.createNewFile();
+		} catch (IOException ioe) {
+		     System.out.println("Error while Creating File in Java" + ioe);
+		}
 		FileReader fr = new FileReader("scores" + level + ".txt");
 		BufferedReader br = new BufferedReader(fr);
 		int numberOfLines;
@@ -66,6 +74,9 @@ public class Scores {
 		if (this.scores.size() > 10) {
 			this.scores.remove(10);
 		}
+		
+		System.out.println(StatusLine.getInstance().getLevel());
+		System.out.println(status.getLevel());
 
 		saveScores();
 	}
@@ -74,6 +85,14 @@ public class Scores {
 
 		try {
 			int level = StatusLine.getInstance().getLevel();
+			File scoreFile = new File("scores" + level + ".txt");
+
+			try {
+			    scoreFile.createNewFile();
+			} catch (IOException ioe) {
+			     System.out.println("Error while Creating File in Java" + ioe);
+			}
+
 			BufferedWriter out = new BufferedWriter(new FileWriter("scores"
 					+ level + ".txt"));
 			for (int i = 0; i < this.scores.size(); i++) {
