@@ -45,7 +45,6 @@ public class KeyboardController extends GameController {
 
 		switch (keyValue) {
 		case "Enter":
-			System.out.println(key.getKind().name());
 			return Controls.SELECT;
 		case "NormalKey": {
 			if (key.getCharacter() == 'q' || key.getCharacter() == 'Q') {

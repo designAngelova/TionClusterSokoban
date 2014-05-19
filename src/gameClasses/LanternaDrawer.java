@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 
 import com.googlecode.lanterna.terminal.Terminal;
 
-public class LanternaDrawer {
+public class LanternaDrawer extends Drawer{
 	private Terminal terminal = GameTerminal.getInstance().getTerminal();
 	private int scrColumns = this.terminal.getTerminalSize().getColumns();
 	private int scrRows = this.terminal.getTerminalSize().getRows();
@@ -125,7 +125,8 @@ public class LanternaDrawer {
 		this.terminal.applyBackgroundColor(Terminal.Color.DEFAULT);
 	}
 
-	public void drawScores(Scores scores, int level) {
+	public void drawScores(Scores scores) {
+		int level = this.statusLine.getLevel();
 		this.terminal.clearScreen();
 		int colFieldPosModifier = (this.scrColumns - 36) / 2;
 		int rowFieldPosModifier = (this.scrRows - scores.getList().size()) / 2;

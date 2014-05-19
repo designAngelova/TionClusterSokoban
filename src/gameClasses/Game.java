@@ -8,7 +8,7 @@ import com.googlecode.lanterna.terminal.Terminal;
 public class Game {
 	private Terminal terminal;
 	private StatusLine statusLine;
-	private LanternaDrawer drawer;
+	private Drawer drawer;
 	private GameField field;
 	private Menu gameMenu;
 	private Menu nextMenu;
@@ -108,7 +108,7 @@ public class Game {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				this.drawer.drawScores(this.scores, this.statusLine.getLevel());
+				this.drawer.drawScores(this.scores);
 				this.statusLine.setGameScreen("menu");
 			}
 				break;
@@ -220,7 +220,7 @@ public class Game {
 	}
 
 	private void showNextMenu() {
-		this.drawer.drawScores(this.scores, this.statusLine.getLevel());
+		this.drawer.drawScores(this.scores);
 		Controls key = this.controller.getAction(false);
 		while (key != Controls.SELECT) {
 			key = this.controller.getAction(false);
@@ -282,7 +282,7 @@ public class Game {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.drawer.drawScores(this.scores, this.statusLine.getLevel());
+		this.drawer.drawScores(this.scores);
 		Controls key = this.controller.getAction(false);
 		while (key != Controls.SELECT) {
 			key = this.controller.getAction(false);

@@ -74,9 +74,6 @@ public class Scores {
 		if (this.scores.size() > 10) {
 			this.scores.remove(10);
 		}
-		
-		System.out.println(StatusLine.getInstance().getLevel());
-		System.out.println(status.getLevel());
 
 		saveScores();
 	}

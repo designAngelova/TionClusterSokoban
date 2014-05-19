@@ -4,8 +4,7 @@ package gameClasses;
 
 public abstract class Drawer {
 
-	 abstract void drawMenu(Menu menu) ;
+	 abstract void drawMenu(Menu menu, String nameOfMenu) ;
 	 abstract void drawScores(Scores scores);
 	 abstract void drawGameField(GameField field);
-	 abstract void drawStatusLine(StatusLine status);
 	}
