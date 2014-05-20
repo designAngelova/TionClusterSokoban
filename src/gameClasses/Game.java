@@ -184,7 +184,7 @@ public class Game {
 	}
 
 	private void playIntro() {
-
+		this.drawer.drawIntro();
 	}
 
 	private String getPlayerName() {

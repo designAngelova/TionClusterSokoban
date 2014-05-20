@@ -179,6 +179,18 @@ public class LanternaDrawer extends Drawer{
 		}
 	}
 	
+	private void drawInfoPause(String info, int millSec) {
+		for (int i = 0; i < info.length(); i++) {
+			try {
+				Thread.sleep(millSec);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			this.terminal.putCharacter(info.charAt(i));
+		}
+	}
+	
 	private static String padRight(String s, int n) {
 	     return String.format("%1$-" + n + "s", s);  
 	}
@@ -186,5 +198,143 @@ public class LanternaDrawer extends Drawer{
 	private static String padLeft(String s, int n) {
 	    return String.format("%1$" + n + "s", s);  
 	}
+	
+	@Override
+	public void drawIntro(){
+		String text = "TION CLUSTER";
+		int rowMod = scrRows / 3;
+		int colMod = (scrColumns / 2) - (text.length() / 2);
+        for (int i = text.length() - 1; i >= 0; i--)
+        {
+            if (text.charAt(i) != ' ')
+            {
+                int motionSpeed = (i + colMod);
+                for (int pos = 0; pos <= i + colMod; pos++)
+                {
+                	drawChar(text.charAt(i), rowMod, pos, Terminal.Color.WHITE, Terminal.Color.DEFAULT, 0);
+                    try {
+						Thread.sleep(motionSpeed);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                    if (pos != i + colMod)
+                    {
+                    	drawChar(' ', rowMod, pos, Terminal.Color.WHITE, Terminal.Color.DEFAULT, 0);
+                        motionSpeed = motionSpeed - 1;
+                    }
+                    else
+                    {
+                        drawImpact(rowMod, i + colMod);
+                    }
+                }
+            }  
+        }
+        
+        this.terminal.applySGR(Terminal.SGR.EXIT_BOLD);
+        text = "present";
+        this.terminal.moveCursor(((scrColumns - text.length()) / 2) + 1, rowMod + 2);
+        drawInfoPause(text, 350);
+        this.terminal.applySGR(Terminal.SGR.ENTER_BOLD);
+        text = "X O X O X A X";
+        this.terminal.moveCursor(((scrColumns - text.length()) / 2) + 1, rowMod * 2);
+        
+        for (int col = 0; col < text.length(); col++) {
+			if (text.charAt(col) == 'X' || text.charAt(col) == ' ') {
+				drawChar(text.charAt(col), rowMod * 2, (((scrColumns - text.length()) / 2) + 1)+col, Terminal.Color.YELLOW, Terminal.Color.DEFAULT, 0);
+			}
+			else {
+				drawChar(text.charAt(col), rowMod * 2, (((scrColumns - text.length()) / 2) + 1)+col, Terminal.Color.WHITE, Terminal.Color.RED, 0);
+			}
+		}
+        
+        for (int i = 2, x = scrColumns - 2; i < ((scrColumns - text.length()) / 2) + 1; i++, x--) {
+        	drawChar(' ', rowMod * 2, i, Terminal.Color.DEFAULT, Terminal.Color.GREEN, 0);
+        	drawChar('\u263a', rowMod * 2, i - 1, Terminal.Color.YELLOW, Terminal.Color.DEFAULT, 0);
+        	
+        	drawChar(' ', rowMod * 2, x, Terminal.Color.DEFAULT, Terminal.Color.GREEN, 0);
+        	drawChar('\u263a', rowMod * 2, x + 1, Terminal.Color.YELLOW, Terminal.Color.DEFAULT, 100);
+        	
+        	drawChar(' ', rowMod * 2, i, Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, 0);
+        	drawChar(' ', rowMod * 2, i - 1, Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, 0);
+        	drawChar(' ', rowMod * 2, x, Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, 0);
+        	drawChar(' ', rowMod * 2, x + 1, Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, 0);
+		}
+        
+        drawChar('S', rowMod * 2, ((scrColumns - text.length()) / 2) + 1, Terminal.Color.WHITE, Terminal.Color.GREEN, 0);
+        drawChar('N', rowMod * 2, ((scrColumns - text.length()) / 2) + text.length(), Terminal.Color.WHITE, Terminal.Color.GREEN, 0);
+        
+        for (int i = scrRows - 2; i > rowMod * 2; i--) {
+        	drawChar(' ', i, (((scrColumns - text.length()) / 2) + 1) + 4, Terminal.Color.DEFAULT, Terminal.Color.GREEN, 0);
+        	drawChar('\u263a',  i + 1, (((scrColumns - text.length()) / 2) + 1) + 4, Terminal.Color.YELLOW, Terminal.Color.DEFAULT, 0);  	
+        	drawChar(' ', i, (((scrColumns - text.length()) / 2) + 1) + 8, Terminal.Color.DEFAULT, Terminal.Color.GREEN, 0);
+        	drawChar('\u263a',  i + 1, (((scrColumns - text.length()) / 2) + 1) + 8, Terminal.Color.YELLOW, Terminal.Color.DEFAULT, 200);
+        	
+        	drawChar(' ', i, (((scrColumns - text.length()) / 2) + 1) + 4, Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, 0);
+        	drawChar(' ',  i + 1, (((scrColumns - text.length()) / 2) + 1) + 4, Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, 0);  	
+        	drawChar(' ', i, (((scrColumns - text.length()) / 2) + 1) + 8, Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, 0);
+        	drawChar(' ',  i + 1, (((scrColumns - text.length()) / 2) + 1) + 8, Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, 0);
+		}
+        
+        drawChar('K', rowMod * 2, (((scrColumns - text.length()) / 2) + 1) + 4, Terminal.Color.WHITE, Terminal.Color.GREEN, 0);
+        drawChar('B', rowMod * 2, (((scrColumns - text.length()) / 2) + 1) + 8, Terminal.Color.WHITE, Terminal.Color.GREEN, 0);
+        
+        try {
+			Thread.sleep(4000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void drawChar(char ch, int row, int col, Terminal.Color foregroundColor, Terminal.Color backgroundColor, int millSec){
+		this.terminal.moveCursor(col, row);
+		this.terminal.applyForegroundColor(foregroundColor);
+		this.terminal.applyBackgroundColor(backgroundColor);
+		
+		this.terminal.putCharacter(ch);
+		try {
+			Thread.sleep(millSec);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		this.terminal.applyForegroundColor(Terminal.Color.DEFAULT);
+		this.terminal.applyBackgroundColor(Terminal.Color.DEFAULT);
+	}
+	
+	private void drawImpact(int row, int col) {
+        
+		this.terminal.applyForegroundColor(Terminal.Color.YELLOW);
+		
+		for (int i = 1; i <= 5; i++)
+        {
+        	this.terminal.moveCursor(col - i, row - i);
+            String text = MessageFormat.format("\\{0}|{0}/", new String(new char[i - 1]).replace('\0', ' '));
+            drawInfo(text);
+            this.terminal.moveCursor(col - i, row + i);
+            text = MessageFormat.format("/{0}|{0}\\", new String(new char[i - 1]).replace('\0', ' '));
+            drawInfo(text);
+            try {
+				Thread.sleep(15);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            this.terminal.moveCursor(col - i, row - i);
+            text = new String(new char[((i - 1)*2) + 3]).replace('\0', ' ');
+            drawInfo(text);
+            this.terminal.moveCursor(col - i, row + i);
+            drawInfo(text);
+        }
+        
+        this.terminal.applyForegroundColor(Terminal.Color.DEFAULT);
+	}
 
+	@Override
+	void drawEnd() {
+		// TODO Auto-generated method stub
+		
+	}
 }

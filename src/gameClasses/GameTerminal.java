@@ -13,6 +13,7 @@ public class GameTerminal {
 	protected GameTerminal() {
 		this.terminal = TerminalFacade.createTerminal(System.in,
 				System.out, Charset.forName("UTF8"));
+		this.terminal.applySGR(Terminal.SGR.ENTER_BOLD);
 	}
 
 	public static GameTerminal getInstance() {
