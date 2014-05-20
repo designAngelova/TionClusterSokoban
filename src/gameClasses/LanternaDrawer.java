@@ -221,7 +221,9 @@ public class LanternaDrawer extends Drawer{
                     if (pos != i + colMod)
                     {
                     	drawChar(' ', rowMod, pos, Terminal.Color.WHITE, Terminal.Color.DEFAULT, 0);
-                        motionSpeed = motionSpeed - 1;
+                        if (motionSpeed > 6) {
+                        	motionSpeed = motionSpeed - 2;
+						}                                  	
                     }
                     else
                     {
@@ -234,7 +236,7 @@ public class LanternaDrawer extends Drawer{
         this.terminal.applySGR(Terminal.SGR.EXIT_BOLD);
         text = "present";
         this.terminal.moveCursor(((scrColumns - text.length()) / 2) + 1, rowMod + 2);
-        drawInfoPause(text, 350);
+        drawInfoPause(text, 200);
         this.terminal.applySGR(Terminal.SGR.ENTER_BOLD);
         text = "X O X O X A X";
         this.terminal.moveCursor(((scrColumns - text.length()) / 2) + 1, rowMod * 2);
@@ -253,7 +255,7 @@ public class LanternaDrawer extends Drawer{
         	drawChar('\u263a', rowMod * 2, i - 1, Terminal.Color.YELLOW, Terminal.Color.DEFAULT, 0);
         	
         	drawChar(' ', rowMod * 2, x, Terminal.Color.DEFAULT, Terminal.Color.GREEN, 0);
-        	drawChar('\u263a', rowMod * 2, x + 1, Terminal.Color.YELLOW, Terminal.Color.DEFAULT, 100);
+        	drawChar('\u263a', rowMod * 2, x + 1, Terminal.Color.YELLOW, Terminal.Color.DEFAULT, 80);
         	
         	drawChar(' ', rowMod * 2, i, Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, 0);
         	drawChar(' ', rowMod * 2, i - 1, Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, 0);
