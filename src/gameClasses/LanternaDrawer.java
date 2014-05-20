@@ -208,7 +208,7 @@ public class LanternaDrawer extends Drawer{
         {
             if (text.charAt(i) != ' ')
             {
-                int motionSpeed = (i + colMod);
+                int motionSpeed = (i + colMod / 2);
                 for (int pos = 0; pos <= i + colMod; pos++)
                 {
                 	drawChar(text.charAt(i), rowMod, pos, Terminal.Color.WHITE, Terminal.Color.DEFAULT, 0);
@@ -255,7 +255,7 @@ public class LanternaDrawer extends Drawer{
         	drawChar('\u263a', rowMod * 2, i - 1, Terminal.Color.YELLOW, Terminal.Color.DEFAULT, 0);
         	
         	drawChar(' ', rowMod * 2, x, Terminal.Color.DEFAULT, Terminal.Color.GREEN, 0);
-        	drawChar('\u263a', rowMod * 2, x + 1, Terminal.Color.YELLOW, Terminal.Color.DEFAULT, 80);
+        	drawChar('\u263a', rowMod * 2, x + 1, Terminal.Color.YELLOW, Terminal.Color.DEFAULT, 70);
         	
         	drawChar(' ', rowMod * 2, i, Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, 0);
         	drawChar(' ', rowMod * 2, i - 1, Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, 0);
