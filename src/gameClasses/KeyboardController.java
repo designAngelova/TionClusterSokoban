@@ -7,7 +7,7 @@ import com.googlecode.lanterna.input.Key;
 import com.googlecode.lanterna.terminal.Terminal;
 
 public class KeyboardController extends GameController {
-	
+
 	private Terminal terminal;
 
 	public KeyboardController() {
@@ -25,18 +25,19 @@ public class KeyboardController extends GameController {
 		String keyValue;
 		String time;
 		int count = 0;
-		while (key == null) {			
+		while (key == null) {
 			key = terminal.readInput();
 			if (inProgress) {
 				if (count == 500000) {
-					time = MessageFormat.format("{0, time, mm:ss.SSS}", new Date().getTime() - startTime);
+					time = MessageFormat.format("{0, time, mm:ss.SSS}",
+							new Date().getTime() - startTime);
 					this.terminal.moveCursor(timeCol, timeRow);
 					for (int i = 0; i < time.length(); i++) {
 						this.terminal.putCharacter(time.charAt(i));
 					}
 					count = 0;
 				}
-				
+
 				count++;
 			}
 		}
@@ -51,11 +52,11 @@ public class KeyboardController extends GameController {
 				return Controls.EXIT;
 			}
 			if (key.getCharacter() == 'u' || key.getCharacter() == 'U') {
-
+				return Controls.UNDO;
 			}
-			return Controls.UNDO;
+
 		}
-		
+
 		case "ArrowUp":
 			line.setMoves(line.getMoves() + 1);
 			return Controls.UP;
@@ -73,6 +74,28 @@ public class KeyboardController extends GameController {
 		return control;
 	}
 
-	
-}
+	public String getKey() {
+		Key key = this.terminal.readInput();
+		String keyValue;
+		while (key == null) {
+			key = terminal.readInput();
+		}
 
+		keyValue = key.getKind().name();
+
+		switch (keyValue) {
+		case "Enter": {
+			return keyValue;
+		}
+		case "NormalKey": {
+			return key.getCharacter() + "";
+		}
+		case "Backspace": {
+			return keyValue;
+		}
+		}
+
+		return null;
+
+	}
+}

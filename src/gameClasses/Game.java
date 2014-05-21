@@ -2,6 +2,8 @@ package gameClasses;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.googlecode.lanterna.terminal.Terminal;
 
@@ -174,6 +176,33 @@ public class Game {
 			}
 				break;
 			case "credits": {
+				this.terminal.clearScreen();
+				int rowMod = this.terminal.getTerminalSize().getRows() / 3;
+				String text = "Georgi Stoyanov";
+		        this.terminal.moveCursor((this.terminal.getTerminalSize().getColumns()/2) - 10, rowMod);
+		        this.drawer.drawInfoPause(text, 100);
+		        text = "Ventsislav Yordanov";
+		        this.terminal.moveCursor((this.terminal.getTerminalSize().getColumns()/2) - 10, rowMod + 1);
+		        this.drawer.drawInfoPause(text, 100);
+		        text = "Aneliya Angelova";
+		        this.terminal.moveCursor((this.terminal.getTerminalSize().getColumns()/2) - 10, rowMod + 2);
+		        this.drawer.drawInfoPause(text, 100);
+		        text = "Alexandra Chariyska";
+		        this.terminal.moveCursor((this.terminal.getTerminalSize().getColumns()/2) - 10, rowMod + 3);
+		        this.drawer.drawInfoPause(text, 100);
+		        text = "Blagovesta Stanoeva";
+		        this.terminal.moveCursor((this.terminal.getTerminalSize().getColumns()/2) - 10, rowMod + 4);
+		        this.drawer.drawInfoPause(text, 100);
+		        text = "Emilia Kolarova";
+		        this.terminal.moveCursor((this.terminal.getTerminalSize().getColumns()/2) - 10, rowMod + 5);
+		        this.drawer.drawInfoPause(text, 100);
+		        try {
+					Thread.sleep(4000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        this.statusLine.setGameScreen("menu");
 
 			}
 				break;
@@ -188,7 +217,35 @@ public class Game {
 	}
 
 	private String getPlayerName() {
+		this.terminal.clearScreen();
 		String playerName = "";
+		List<Character> name = new ArrayList<Character>();
+		String text = "ENTER PLAYER NAME: ";
+		int rowMod = this.terminal.getTerminalSize().getRows() / 3;
+        this.terminal.moveCursor(((this.terminal.getTerminalSize().getColumns() - text.length()) / 2) - 5, rowMod + 2);
+        this.drawer.drawInfoPause(text, 0);
+		String key = this.controller.getKey();
+		while (!key.equals("Enter")) {
+			switch (key) {
+			case "Backspace":
+				name.remove(name.size() - 1);
+				break;
+
+			default:
+				name.add(key.charAt(0));
+				break;
+			}
+			
+			this.terminal.clearScreen();
+			playerName = getStringRepresentation(name);
+			text = "ENTER PLAYER NAME: ";
+	        this.terminal.moveCursor(((this.terminal.getTerminalSize().getColumns() - text.length()) / 2) - 5, rowMod + 2);
+	        this.drawer.drawInfoPause(text, 0);
+	        this.drawer.drawInfoPause(playerName, 0);
+	        key = this.controller.getKey();
+			
+		}
+		
 
 		return playerName;
 	}
@@ -292,7 +349,11 @@ public class Game {
 	}
 
 	private void playEnd() {
-
+		this.terminal.clearScreen();
+		int rowMod = this.terminal.getTerminalSize().getRows() / 3;
+		String text = "GOOD BYE!!!................";
+        this.terminal.moveCursor(((this.terminal.getTerminalSize().getColumns() - text.length()) / 2), rowMod + 2);
+        this.drawer.drawInfoPause(text, 90);
 	}
 
 	private void loadLevelMenu() {
@@ -313,5 +374,15 @@ public class Game {
 		} catch (Exception e) {
 		}
 
+	}
+	
+	private String getStringRepresentation(List<Character> list)
+	{    
+	    StringBuilder builder = new StringBuilder(list.size());
+	    for(Character ch: list)
+	    {
+	        builder.append(ch);
+	    }
+	    return builder.toString();
 	}
 }

@@ -9,4 +9,5 @@ public abstract class Drawer {
 	 abstract void drawGameField(GameField field);
 	 abstract void drawIntro();
 	 abstract void drawEnd();
+	 abstract void drawInfoPause(String text, int i);
 	}

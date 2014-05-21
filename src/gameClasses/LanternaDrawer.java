@@ -179,7 +179,7 @@ public class LanternaDrawer extends Drawer{
 		}
 	}
 	
-	private void drawInfoPause(String info, int millSec) {
+	public void drawInfoPause(String info, int millSec) {
 		for (int i = 0; i < info.length(); i++) {
 			try {
 				Thread.sleep(millSec);
